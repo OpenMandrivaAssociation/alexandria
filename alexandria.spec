@@ -20,8 +20,6 @@ BuildRequires:	ruby-devel gettext GConf2 intltool
 BuildRequires:	desktop-file-utils
 BuildArch: noarch
 
-%define ruby_libdir %(ruby -rrbconfig -e 'puts Config::CONFIG["sitelibdir"]')
-
 %description
 Alexandria is a GNOME application to help you manage your book collection.
 
@@ -100,7 +98,7 @@ rm -rf %buildroot
 %files -f %name.lang
 %defattr(-,root,root)
 %{_bindir}/*
-%{ruby_libdir}/%{name}*
+%{ruby_sitelibdir}/%{name}*
 %{_datadir}/%{name}
 %{_iconsdir}/%{name}.png
 %{_miconsdir}/%{name}.png

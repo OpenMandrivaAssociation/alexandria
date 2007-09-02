@@ -1,6 +1,6 @@
 %define	name	alexandria
 %define	version	0.6.1
-%define	release	%mkrel 7
+%define	release	%mkrel 8
 
 Summary:	GNOME application to help you manage your book collection
 Name:		%{name}
@@ -9,9 +9,6 @@ Release:	%{release}
 URL:		http://alexandria.rubyforge.org/
 Source0:	http://rubyforge.org/frs/download.php/746/%{name}-%{version}.tar.bz2
 Patch0:		alexandria-0.6.1-gettext.patch
-#Source1: %{name}-16.png.bz2
-#Source2: %{name}-32.png.bz2
-#Source3: %{name}-48.png.bz2
 License:	GPL
 Group:		Databases
 BuildRoot:	%{_tmppath}/%{name}-buildroot
@@ -67,16 +64,6 @@ cp -a schemas/alexandria.schemas %buildroot%{_sysconfdir}/gconf/schemas/
 %find_lang %name --all-name 
 
 #menu
-install -m 755 -d %buildroot%{_menudir}
-cat << EOF > %buildroot%{_menudir}/%{name}
-?package(%name): needs="x11" \
-	section="More Applications/Databases" \
-	title="Alexandria" \
-	longtitle="GNOME library manager" \
-	command="%{_bindir}/%{name}" \
-	icon="%{name}.png" \
-	xdg="true"
-EOF
 
 install -m 755 -d %buildroot%{_datadir}/applications/
 cp -a %{name}.desktop %buildroot%{_datadir}/applications/
@@ -94,23 +81,17 @@ cp -a data/alexandria/icons/alexandria_small.png %buildroot%_miconsdir/%{name}.p
 cp -a data/alexandria/icons/alexandria_small.png %buildroot%_iconsdir/%{name}.png
 cp -a data/alexandria/icons/alexandria_small.png %buildroot%_liconsdir/%{name}.png
 
-#bzcat %{SOURCE1} > %buildroot%_miconsdir/%{name}.png
-#bzcat %{SOURCE2} > %buildroot%_iconsdir/%{name}.png
-#bzcat %{SOURCE3} > %buildroot%_liconsdir/%{name}.png
 
 %post
-if [ -x %{_bindir}/scrollkeeper-update ]; then %{_bindir}/scrollkeeper-update -q || true ; fi
+%update_scrollkeeper
 %update_menus
-GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source` gconftool-2 --makefile-install-rule %{_sysconfdir}/gconf/schemas/%{name}.schemas > /dev/null
-pidof gconfd-2 >/dev/null && killall gconfd-2 || :
+%post_install_gconf_schemas %{name}
 
 %preun
-if [ "$1" = "0" ] ; then
- GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source` gconftool-2 --makefile-uninstall-rule %{_sysconfdir}/gconf/schemas/%{name}.schemas > /dev/null
-fi
+%preun_uninstall_gconf_schemas %{name}
 
 %postun
-if [ -x %{_bindir}/scrollkeeper-update ]; then %{_bindir}/scrollkeeper-update -q || true ; fi
+%clean_scrollkeeper
 %clean_menus
 
 %clean
@@ -121,7 +102,6 @@ rm -rf %buildroot
 %{_bindir}/*
 %{ruby_libdir}/%{name}*
 %{_datadir}/%{name}
-%{_menudir}/%name
 %{_iconsdir}/%{name}.png
 %{_miconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png

@@ -11,7 +11,6 @@ Source0:	http://rubyforge.org/frs/download.php/746/%{name}-%{version}.tar.bz2
 Patch0:		alexandria-0.6.1-gettext.patch
 License:	GPL
 Group:		Databases
-BuildRoot:	%{_tmppath}/%{name}-buildroot
 Requires:	ruby >= 1.8 ruby-amazon >= 0.8.3 ruby-gettext >= 0.6.1
 Requires:	ruby-libglade2 ruby-gconf2 ruby-gnome2 >= 0.12.0 ruby-zoom
 Requires(post):	scrollkeeper

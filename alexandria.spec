@@ -18,7 +18,7 @@ Requires:	ruby-libglade2 ruby-gconf2 ruby-gnome2 >= 0.12.0 ruby-zoom
 Requires(post):	scrollkeeper
 Requires(postun):	scrollkeeper
 BuildRequires:	ruby-devel gettext GConf2 intltool
-BuildRequires:	desktop-file-utils
+BuildRequires:	desktop-file-utils ruby-rake
 BuildArch: noarch
 
 %description
@@ -42,6 +42,7 @@ Alexandria:
   * handles book rating and notes ;
   * supports CueCat (R) barcode readers ;
   * includes translations for several languages.
+
 %prep
 %setup -q
 %patch1 -p0
@@ -51,8 +52,6 @@ rake build
 
 %install
 rm -rf %buildroot
-#GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 ruby install.rb install --prefix=%buildroot
-#GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 PREFIX=%buildroot/%_prefix rake install
 PREFIX=%buildroot/%_prefix rake install
 
 mkdir -p %buildroot%{_sysconfdir}/gconf/schemas/

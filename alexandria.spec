@@ -1,15 +1,16 @@
 %define	name	alexandria
-%define	version	0.6.1
-%define	release	%mkrel 8
+%define	version	0.6.3
+%define	release	%mkrel 1
 
 Summary:	GNOME application to help you manage your book collection
 Name:		%{name}
 Version:	%{version}
 Release:	%{release}
 URL:		http://alexandria.rubyforge.org/
-Source0:	http://rubyforge.org/frs/download.php/746/%{name}-%{version}.tar.bz2
+Source0:	http://files.rubyforge.mmmultiworks.com/alexandria/%name-%version.tar.gz
 Patch0:		alexandria-0.6.1-gettext.patch
-License:	GPL
+Patch1:		alexandria-0.6.3-disable-post_install.patch
+License:	GPLv2+
 Group:		Databases
 BuildRoot:	%{_tmppath}/%{name}-buildroot
 Requires:	ruby >= 1.8 ruby-amazon >= 0.8.3 ruby-gettext >= 0.6.1
@@ -43,18 +44,16 @@ Alexandria:
   * includes translations for several languages.
 %prep
 %setup -q
-%patch0 -p0
-
-# Don't run scrollkeeper-update in install
-rm -f data/omf/alexandria/post-install.rb
+%patch1 -p0
 
 %build
-ruby install.rb config
-ruby install.rb setup
+rake build
 
 %install
 rm -rf %buildroot
-GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 ruby install.rb install --prefix=%buildroot
+#GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 ruby install.rb install --prefix=%buildroot
+#GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1 PREFIX=%buildroot/%_prefix rake install
+PREFIX=%buildroot/%_prefix rake install
 
 mkdir -p %buildroot%{_sysconfdir}/gconf/schemas/
 cp -a schemas/alexandria.schemas %buildroot%{_sysconfdir}/gconf/schemas/
@@ -62,15 +61,11 @@ cp -a schemas/alexandria.schemas %buildroot%{_sysconfdir}/gconf/schemas/
 %find_lang %name --all-name 
 
 #menu
-
+rm -f %buildroot%_datadir/menu/alexandria
 install -m 755 -d %buildroot%{_datadir}/applications/
 cp -a %{name}.desktop %buildroot%{_datadir}/applications/
 
 desktop-file-install --vendor="" \
-  --remove-category="Application" \
-  --add-category="GTK" \
-  --add-category="GNOME" \
-  --add-category="X-MandrivaLinux-MoreApplications-Databases" \
   --dir $RPM_BUILD_ROOT%{_datadir}/applications $RPM_BUILD_ROOT%{_datadir}/applications/*
 
 # icon
@@ -84,6 +79,7 @@ cp -a data/alexandria/icons/alexandria_small.png %buildroot%_liconsdir/%{name}.p
 %update_scrollkeeper
 %update_menus
 %post_install_gconf_schemas %{name}
+%update_icon_cache hicolor
 
 %preun
 %preun_uninstall_gconf_schemas %{name}
@@ -91,6 +87,7 @@ cp -a data/alexandria/icons/alexandria_small.png %buildroot%_liconsdir/%{name}.p
 %postun
 %clean_scrollkeeper
 %clean_menus
+%clean_icon_cache hicolor
 
 %clean
 rm -rf %buildroot
@@ -107,6 +104,6 @@ rm -rf %buildroot
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/gnome/help/%{name}
 %{_datadir}/omf/%{name}
-
-%doc README AUTHORS ChangeLog HACKING TODO
-
+%_iconsdir/hicolor/*/apps/*
+%_mandir/man1/*
+%doc README ChangeLog TODO

@@ -1,6 +1,6 @@
 %define	name	alexandria
 %define	version	0.6.3
-%define	release	%mkrel 1
+%define	release	%mkrel 2
 
 Summary:	GNOME application to help you manage your book collection
 Name:		%{name}
@@ -10,6 +10,7 @@ URL:		http://alexandria.rubyforge.org/
 Source0:	http://files.rubyforge.mmmultiworks.com/alexandria/%name-%version.tar.gz
 Patch0:		alexandria-0.6.1-gettext.patch
 Patch1:		alexandria-0.6.3-disable-post_install.patch
+Patch2:		alexandria-0.6.3-crash_tooltips.patch
 License:	GPLv2+
 Group:		Databases
 BuildRoot:	%{_tmppath}/%{name}-buildroot
@@ -46,6 +47,7 @@ Alexandria:
 %prep
 %setup -q
 %patch1 -p0
+%patch2 -p1
 
 %build
 rake build

@@ -77,19 +77,23 @@ cp -a data/alexandria/icons/alexandria_small.png %buildroot%_iconsdir/%{name}.pn
 cp -a data/alexandria/icons/alexandria_small.png %buildroot%_liconsdir/%{name}.png
 
 
+%if %mdkversion < 200900
 %post
 %update_scrollkeeper
 %update_menus
 %post_install_gconf_schemas %{name}
 %update_icon_cache hicolor
+%endif
 
 %preun
 %preun_uninstall_gconf_schemas %{name}
 
+%if %mdkversion < 200900
 %postun
 %clean_scrollkeeper
 %clean_menus
 %clean_icon_cache hicolor
+%endif
 
 %clean
 rm -rf %buildroot

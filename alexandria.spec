@@ -1,6 +1,6 @@
 %define	name	alexandria
-%define	version	0.6.3
-%define	release	%mkrel 4
+%define	version	0.6.4.1
+%define	release	%mkrel 1
 
 Summary:	GNOME application to help you manage your book collection
 Name:		%{name}
@@ -9,12 +9,10 @@ Release:	%{release}
 URL:		http://alexandria.rubyforge.org/
 Source0:	http://files.rubyforge.mmmultiworks.com/alexandria/%name-%version.tar.gz
 Patch1:		alexandria-0.6.3-disable-post_install.patch
-Patch2:		alexandria-0.6.3-crash_tooltips.patch
-Patch3:		alexandria-0.6.3-add-amazon-ecs.patch
 License:	GPLv2+
 Group:		Databases
 BuildRoot:	%{_tmppath}/%{name}-buildroot
-Requires:	ruby >= 1.8 ruby-amazon >= 0.8.3 ruby-gettext >= 0.6.1
+Requires:	ruby >= 1.8 ruby-gettext >= 0.6.1 ruby-hpricot
 Requires:	ruby-libglade2 ruby-gconf2 ruby-gnome2 >= 0.12.0 ruby-zoom
 Requires(post):	scrollkeeper
 Requires(postun):	scrollkeeper
@@ -47,8 +45,6 @@ Alexandria:
 %prep
 %setup -q
 %patch1 -p0
-%patch2 -p1
-%patch3 -p1
 
 %build
 rake build
@@ -110,6 +106,7 @@ rm -rf %buildroot
 %{_datadir}/applications/%{name}.desktop
 %{_datadir}/gnome/help/%{name}
 %{_datadir}/omf/%{name}
+%{_datadir}/sounds/%{name}
 %_iconsdir/hicolor/*/apps/*
 %_mandir/man1/*
 %doc README ChangeLog TODO

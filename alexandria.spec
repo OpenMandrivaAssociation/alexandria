@@ -1,6 +1,6 @@
 %define	name	alexandria
 %define	version	0.6.4.1
-%define	release	%mkrel 1
+%define	release	%mkrel 2
 
 Summary:	GNOME application to help you manage your book collection
 Name:		%{name}

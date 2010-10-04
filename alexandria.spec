@@ -1,5 +1,5 @@
 %define	name	alexandria
-%define	version	0.6.5
+%define	version	0.6.6
 %define	release	%mkrel 1
 
 Summary:	GNOME application to help you manage your book collection
@@ -7,8 +7,7 @@ Name:		%{name}
 Version:	%{version}
 Release:	%{release}
 URL:		http://alexandria.rubyforge.org/
-Source0:	http://files.rubyforge.mmmultiworks.com/alexandria/%name-%version.tar.gz
-Patch1:		alexandria-0.6.3-disable-post_install.patch
+Source0:	http://files.rubyforge.vm.bytemark.co.uk/alexandria/%name-%version.tar.gz
 License:	GPLv2+
 Group:		Databases
 BuildRoot:	%{_tmppath}/%{name}-buildroot
@@ -44,7 +43,7 @@ Alexandria:
 
 %prep
 %setup -q
-%patch1 -p0
+#%patch1 -p0
 
 %build
 rake build
@@ -65,6 +64,8 @@ cp -a %{name}.desktop %buildroot%{_datadir}/applications/
 
 desktop-file-install --vendor="" \
   --dir $RPM_BUILD_ROOT%{_datadir}/applications $RPM_BUILD_ROOT%{_datadir}/applications/*
+
+rm -f %buildroot%{_datadir}/gconf/schemas/alexandria.schemas
 
 # icon
 install -m 755 -d %buildroot{%{_miconsdir},%{_liconsdir}}
@@ -107,6 +108,7 @@ rm -rf %buildroot
 %{_datadir}/gnome/help/%{name}
 %{_datadir}/omf/%{name}
 %{_datadir}/sounds/%{name}
+%{_datadir}/pixmaps/alexandria.xpm
 %_iconsdir/hicolor/*/apps/*
 %_mandir/man1/*
 %doc README ChangeLog TODO

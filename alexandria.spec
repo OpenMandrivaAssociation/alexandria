@@ -1,6 +1,6 @@
 %define	name	alexandria
 %define	version	0.6.6
-%define	release	%mkrel 1
+%define	release	%mkrel 2
 
 Summary:	GNOME application to help you manage your book collection
 Name:		%{name}
@@ -11,7 +11,7 @@ Source0:	http://files.rubyforge.vm.bytemark.co.uk/alexandria/%name-%version.tar.
 License:	GPLv2+
 Group:		Databases
 BuildRoot:	%{_tmppath}/%{name}-buildroot
-Requires:	ruby >= 1.8 ruby-gettext >= 0.6.1 ruby-hpricot
+Requires:	ruby >= 1.8 ruby-gettext >= 0.6.1 rubygem(hpricot)
 Requires:	ruby-libglade2 ruby-gconf2 ruby-gnome2 >= 0.12.0 ruby-zoom
 Requires(post):	scrollkeeper
 Requires(postun):	scrollkeeper

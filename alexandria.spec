@@ -43,14 +43,15 @@ Alexandria:
 
 %prep
 %setup -q
-#%patch1 -p0
 
 %build
 rake build
 
 %install
 rm -rf %buildroot
-PREFIX=%buildroot/%_prefix rake install
+rake install_package_staging \
+	DESTDIR=$RPM_BUILD_ROOT \
+	RUBYLIBDIR=%{ruby_sitelibdir}
 
 mkdir -p %buildroot%{_sysconfdir}/gconf/schemas/
 cp -a schemas/alexandria.schemas %buildroot%{_sysconfdir}/gconf/schemas/

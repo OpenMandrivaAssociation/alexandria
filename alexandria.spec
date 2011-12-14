@@ -1,6 +1,6 @@
 %define	name	alexandria
-%define	version	0.6.6
-%define	release	%mkrel 3
+%define	version	0.6.8
+%define	release	1
 
 Summary:	GNOME application to help you manage your book collection
 Name:		%{name}
@@ -10,7 +10,6 @@ URL:		http://alexandria.rubyforge.org/
 Source0:	http://files.rubyforge.vm.bytemark.co.uk/alexandria/%name-%version.tar.gz
 License:	GPLv2+
 Group:		Databases
-BuildRoot:	%{_tmppath}/%{name}-buildroot
 Requires:	ruby >= 1.8 ruby-gettext >= 0.6.1 rubygem(hpricot)
 Requires:	ruby-libglade2 ruby-gconf2 ruby-gnome2 >= 0.12.0 ruby-zoom
 Requires(post):	scrollkeeper
@@ -48,7 +47,6 @@ Alexandria:
 rake build
 
 %install
-rm -rf %buildroot
 rake install_package_staging \
 	DESTDIR=$RPM_BUILD_ROOT \
 	RUBYLIBDIR=%{ruby_sitelibdir}
@@ -73,28 +71,6 @@ install -m 755 -d %buildroot{%{_miconsdir},%{_liconsdir}}
 cp -a data/alexandria/icons/alexandria_small.png %buildroot%_miconsdir/%{name}.png
 cp -a data/alexandria/icons/alexandria_small.png %buildroot%_iconsdir/%{name}.png
 cp -a data/alexandria/icons/alexandria_small.png %buildroot%_liconsdir/%{name}.png
-
-
-%if %mdkversion < 200900
-%post
-%update_scrollkeeper
-%update_menus
-%post_install_gconf_schemas %{name}
-%update_icon_cache hicolor
-%endif
-
-%preun
-%preun_uninstall_gconf_schemas %{name}
-
-%if %mdkversion < 200900
-%postun
-%clean_scrollkeeper
-%clean_menus
-%clean_icon_cache hicolor
-%endif
-
-%clean
-rm -rf %buildroot
 
 %files -f %name.lang
 %defattr(-,root,root)

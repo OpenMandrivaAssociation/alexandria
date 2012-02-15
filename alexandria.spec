@@ -1,11 +1,7 @@
-%define	name	alexandria
-%define	version	0.6.8
-%define	release	1
-
 Summary:	GNOME application to help you manage your book collection
-Name:		%{name}
-Version:	%{version}
-Release:	%{release}
+Name:		alexandria
+Version:	0.6.8
+Release:	2
 URL:		http://alexandria.rubyforge.org/
 Source0:	http://files.rubyforge.vm.bytemark.co.uk/alexandria/%name-%version.tar.gz
 License:	GPLv2+

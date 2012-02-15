@@ -4,6 +4,7 @@ Version:	0.6.8
 Release:	2
 URL:		http://alexandria.rubyforge.org/
 Source0:	http://files.rubyforge.vm.bytemark.co.uk/alexandria/%name-%version.tar.gz
+Patch0:		alexandria-0.6.8-ruby-1.9.1.patch
 License:	GPLv2+
 Group:		Databases
 Requires:	ruby >= 1.8 ruby-gettext >= 0.6.1 rubygem(hpricot)
@@ -11,7 +12,7 @@ Requires:	ruby-libglade2 ruby-gconf2 ruby-gnome2 >= 0.12.0 ruby-zoom
 Requires(post):	scrollkeeper
 Requires(postun):	scrollkeeper
 BuildRequires:	ruby-devel gettext GConf2 intltool
-BuildRequires:	desktop-file-utils ruby-rake
+BuildRequires:	desktop-file-utils
 BuildArch: noarch
 
 %description
@@ -38,9 +39,10 @@ Alexandria:
 
 %prep
 %setup -q
+%patch0 -p1 -b .ruby19~
 
 %build
-rake build
+rake --trace build
 
 %install
 rake install_package_staging \

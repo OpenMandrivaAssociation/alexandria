@@ -1,7 +1,7 @@
 Summary:	GNOME application to help you manage your book collection
 Name:		alexandria
-Version:	0.6.8
-Release:	2
+Version:	0.6.9
+Release:	1
 URL:		http://alexandria.rubyforge.org/
 Source0:	http://files.rubyforge.vm.bytemark.co.uk/alexandria/%name-%version.tar.gz
 Patch0:		alexandria-0.6.8-ruby-1.9.1.patch
@@ -13,6 +13,7 @@ Requires(post):	scrollkeeper
 Requires(postun):	scrollkeeper
 BuildRequires:	ruby-devel gettext GConf2 intltool
 BuildRequires:	desktop-file-utils
+BuildRequires:	rarian
 BuildArch: noarch
 
 %description

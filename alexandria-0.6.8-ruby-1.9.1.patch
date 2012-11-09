@@ -1,0 +1,44 @@
+--- alexandria-0.6.8/Rakefile~	2012-02-15 05:04:37.572715549 +0100
++++ alexandria-0.6.8/Rakefile	2012-02-15 05:04:41.623720049 +0100
+@@ -32,7 +32,7 @@ rescue LoadError
+ end
+ 
+ require 'rake/clean'
+-require 'rake/rdoctask'
++require 'rake/task'
+ require 'rake/packagetask'
+ 
+ $:.unshift(File.join(File.dirname(__FILE__), 'util/rake'))
+--- alexandria-0.6.8/util/rake/fileinstall.rb~	2012-02-15 05:04:44.869723655 +0100
++++ alexandria-0.6.8/util/rake/fileinstall.rb	2012-02-15 05:04:46.508725475 +0100
+@@ -185,12 +185,12 @@ class FileInstallTask < Rake::TaskLib
+   private
+ 
+   def calculate_ruby_dir
+-    ruby_prefix = Config::CONFIG['prefix']
++    ruby_prefix = RbConfig::CONFIG['prefix']
+ 
+     if @install_to_rubylibdir
+-      ruby_libdir = Config::CONFIG['rubylibdir']
++      ruby_libdir = RbConfig::CONFIG['rubylibdir']
+     else
+-      ruby_libdir = Config::CONFIG['sitelibdir']
++      ruby_libdir = RbConfig::CONFIG['sitelibdir']
+     end
+     if ENV.has_key?('RUBYLIBDIR')
+       ruby_libdir = ENV['RUBYLIBDIR']
+--- alexandria-0.6.8/util/rake/omfgenerate.rb~	2012-02-15 05:13:24.165299289 +0100
++++ alexandria-0.6.8/util/rake/omfgenerate.rb	2012-02-15 05:13:34.869311132 +0100
+@@ -73,10 +73,10 @@ class OmfGenerateTask < Rake::TaskLib
+     rule '.omf' => ['.omf.in'] do |t|
+       path = File.join(@gnome_helpfiles_dir, @projectname,
+                        locale_for(t.name), "#{@projectname}.xml")
+-      data = IO.read(t.source)
++      data = IO.read(t.source, :encoding => "BINARY")
+       data.sub!(/PATH_TO_DOC_FILE/, path)
+       puts "Generating #{t.name}..."
+-      File.open(t.name, 'w') { |io| io.puts data }
++      File.open(t.name, 'w', :encoding => "BINARY") { |io| io.puts data }
+     end
+     omf_files.each {|o| @generated_files << o }
+   end
